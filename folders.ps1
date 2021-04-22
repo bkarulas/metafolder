@@ -25,8 +25,8 @@ Function Get-FileMetaData{
   } #end foreach $sfolder
 } #end Get-FileMetaData
 
-$serverIp = "\\192.168.1.144\"
-$searchFile = "Brad","Fran"
+$serverIp = @()
+$searchFile = @()
 $outPut = @()
 
 foreach ($item in $searchFile) {
@@ -35,5 +35,3 @@ foreach ($item in $searchFile) {
 }
 
 $outPut | Out-File -FilePath .\output.json
-
-# Get-FileMetaData -folder "z:\XBMC" | ConvertTo-Json | Out-File -FilePath .\output.json
