@@ -1,0 +1,39 @@
+Function Get-FileMetaData{
+ Param([string[]]$folder)
+ foreach($sFolder in $folder)
+  {
+   $a = 0
+   $objShell = New-Object -ComObject Shell.Application
+   $objFolder = $objShell.namespace($sFolder)
+
+   foreach ($File in $objFolder.items())
+    { 
+     $FileMetaData = New-Object PSOBJECT
+      for ($a ; $a  -le 266; $a++)
+       { 
+         if($objFolder.getDetailsOf($File, $a))
+           {
+             $hash += @{$($objFolder.getDetailsOf($objFolder.items, $a))  =
+                   $($objFolder.getDetailsOf($File, $a)) }
+            $FileMetaData | Add-Member $hash
+            $hash.clear() 
+           } #end if
+       } #end for 
+     $a=0
+     $FileMetaData
+    } #end foreach $file
+  } #end foreach $sfolder
+} #end Get-FileMetaData
+
+$serverIp = "\\192.168.1.144\"
+$searchFile = "Brad","Fran"
+$outPut = @()
+
+foreach ($item in $searchFile) {
+    $searchLocation = $serverIp + $item
+    $outPut += Get-FileMetaData -folder $searchLocation | ConvertTo-Json
+}
+
+$outPut | Out-File -FilePath .\output.json
+
+# Get-FileMetaData -folder "z:\XBMC" | ConvertTo-Json | Out-File -FilePath .\output.json
